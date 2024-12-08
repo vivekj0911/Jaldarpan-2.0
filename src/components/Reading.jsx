@@ -1,11 +1,64 @@
-import React, { useState } from 'react';
-import '../index.css';
+import React, { useState } from "react";
+import {
+    Chart as ChartJS,
+    LineElement,
+    CategoryScale,
+    LinearScale,
+    PointElement,
+    Tooltip,
+    Legend,
+} from "chart.js";
+import { Line } from "react-chartjs-2";
+import "../index.css";
+
+// Register necessary Chart.js components
+ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend);
 
 const Reading = () => {
-    const [selectedDuration, setSelectedDuration] = useState('');
-    const [selectedReportType, setSelectedReportType] = useState('');
-    const [selectedState, setSelectedState] = useState('');
-    const [selectedDistrict, setSelectedDistrict] = useState('');
+    const [selectedDuration, setSelectedDuration] = useState("");
+    const [selectedReportType, setSelectedReportType] = useState("");
+    const [selectedState, setSelectedState] = useState("");
+    const [selectedDistrict, setSelectedDistrict] = useState("");
+
+    // Sample data for water level and water pressure
+    const waterLevelData = {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+        datasets: [
+            {
+                label: "Water Level (in meters)",
+                data: [3.2, 3.5, 3.8, 4.1, 3.9, 4.2],
+                borderColor: "#007bff",
+                backgroundColor: "rgba(0, 123, 255, 0.2)",
+                tension: 0.4,
+            },
+        ],
+    };
+
+    const waterPressureData = {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+        datasets: [
+            {
+                label: "Water Pressure (in bar)",
+                data: [45, 44, 45, 45, 46, 45, 45, 45, 46],
+                borderColor: "#28a745",
+                backgroundColor: "rgba(40, 167, 69, 0.2)",
+                tension: 0.4,
+            },
+        ],
+    };
+
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: true,
+                position: "top",
+            },
+            tooltip: {
+                enabled: true,
+            },
+        },
+    };
 
     return (
         <div className="container mx-auto p-6 bg-background">
@@ -20,39 +73,39 @@ const Reading = () => {
 
                 {/* Filter Section */}
                 <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {['State', 'District', 'Pincode'].map((label, index) => (
+                    {["State", "District", "Pincode"].map((label, index) => (
                         <div key={index} className="bg-white p-6 rounded-lg shadow-lg">
                             <h3 className="text-xl font-semibold text-primary font-nunito">{label}</h3>
                             <select
                                 id={label.toLowerCase()}
                                 className="mt-2 p-2 w-full border border-gray-300 rounded-md text-text"
                                 value={
-                                    label === 'State'
+                                    label === "State"
                                         ? selectedState
-                                        : label === 'District'
-                                        ? selectedDistrict
-                                        : ''
+                                        : label === "District"
+                                            ? selectedDistrict
+                                            : ""
                                 }
                                 onChange={(e) =>
-                                    label === 'State'
+                                    label === "State"
                                         ? setSelectedState(e.target.value)
                                         : setSelectedDistrict(e.target.value)
                                 }
                             >
                                 <option value="">Select</option>
-                                {label === 'State' && (
+                                {label === "State" && (
                                     <>
                                         <option value="california">California</option>
                                         <option value="texas">Texas</option>
                                     </>
                                 )}
-                                {label === 'District' && (
+                                {label === "District" && (
                                     <>
                                         <option value="district2">District 2</option>
                                         <option value="district3">District 3</option>
                                     </>
                                 )}
-                                {label === 'Pincode' && <option value="411018">411018</option>}
+                                {label === "Pincode" && <option value="411018">411018</option>}
                             </select>
                         </div>
                     ))}
@@ -60,19 +113,17 @@ const Reading = () => {
             </section>
 
             {/* Reading Section with Charts */}
-            <section className="mb-10">
-                <div className="flex justify-between gap-6">
-                    {['Chart', 'Area Chart'].map((altText, index) => (
-                        <div key={index} className="flex-1 bg-white p-6 rounded-lg shadow-lg">
-                            <img
-                                src={`./src/assets/${altText.toLowerCase().replace(' ', '-')}.png`}
-                                alt={altText}
-                                className="w-full h-auto"
-                            />
-                        </div>
-                    ))}
+            <section className="graphs-section mb-10 flex flex-col gap-6 md:grid md:grid-cols-2">
+                <div className="graph-container bg-white p-6 rounded-lg shadow-lg">
+                    <h3 className="text-xl font-semibold text-primary mb-4 font-nunito">Water Level</h3>
+                    <Line data={waterLevelData} options={options} />
+                </div>
+                <div className="graph-container bg-white p-6 rounded-lg shadow-lg">
+                    <h3 className="text-xl font-semibold text-primary mb-4 font-nunito">Water Pressure</h3>
+                    <Line data={waterPressureData} options={options} />
                 </div>
             </section>
+
 
             {/* Alert History Section */}
             <section className="alert mb-10">
@@ -82,7 +133,7 @@ const Reading = () => {
                         <table className="min-w-full table-auto">
                             <thead>
                                 <tr>
-                                    {['Sr No.', 'Type', 'Date', 'Location', 'Resolved By', 'Details'].map((header) => (
+                                    {["Sr No.", "Type", "Date", "Location", "Resolved By", "Details"].map((header) => (
                                         <th
                                             key={header}
                                             className="px-4 py-2 text-left text-primary font-nunito"
@@ -95,7 +146,7 @@ const Reading = () => {
                             <tbody>
                                 {[1, 2].map((row, index) => (
                                     <tr key={index}>
-                                        {['1', 'Type 1', '2023-09-15', 'Pimpri, Pune', 'John Doe', 'Download'].map(
+                                        {["1", "Type 1", "2023-09-15", "Pimpri, Pune", "John Doe", "Download"].map(
                                             (content, i) => (
                                                 <td key={i} className="px-4 py-2 text-text font-nunito">
                                                     {i === 5 ? (
@@ -124,7 +175,7 @@ const Reading = () => {
                     <div className="mb-4">
                         <label className="block text-lg text-primary mb-2 font-nunito">Duration:</label>
                         <div className="flex gap-6">
-                            {['Monthly', 'Weekly', 'Yearly'].map((duration) => (
+                            {["Monthly", "Weekly", "Yearly"].map((duration) => (
                                 <label key={duration} className="inline-flex items-center">
                                     <input
                                         type="radio"
