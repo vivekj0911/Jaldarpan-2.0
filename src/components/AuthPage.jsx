@@ -8,7 +8,7 @@ function AuthPage() {
   return (
     <div className="container mx-auto flex items-center justify-center min-h-screen">
       <div className="w-full max-w-lg bg-white shadow-md rounded-lg overflow-hidden">
-        <div className="p-6">
+        <div className="p-6 my-2">
           <h2 className="text-2xl font-bold mb-2">Ground Water Monitoring</h2>
           <p className="text-gray-600 mb-6">Sign up or log in to access the system</p>
           <div className="flex mb-4">

@@ -74,13 +74,13 @@ const Navbar = () => {
               >
                 <i className="bx bx-log-in"></i> <span>Login</span>
               </Link>
-              <Link
+              {/* <Link
                 to="/signup"
                 className="flex items-center space-x-1 text-secondary hover:text-primary"
                 onClick={() => setIsMenuOpen(false)}
               >
                 <i className="bx bx-user-plus"></i> <span>Signup</span>
-              </Link>
+              </Link> */}
             </div>
           </div>
         </div>
