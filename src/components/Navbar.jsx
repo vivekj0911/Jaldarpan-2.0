@@ -1,42 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();
-
-  // Check login status on component mount and when token changes
-  useEffect(() => {
-    const checkLoginStatus = () => {
-      const token = localStorage.getItem('userToken');
-      setIsLoggedIn(!!token);
-    };
-
-    checkLoginStatus();
-
-    // Listen for storage events to handle login/logout across tabs
-    window.addEventListener('storage', checkLoginStatus);
-
-    return () => {
-      window.removeEventListener('storage', checkLoginStatus);
-    };
-  }, []);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);  // Track login state
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const handleLogin = () => {
+    // Implement login logic (mocking for now)
+    setIsLoggedIn(true);
+  };
+
   const handleLogout = () => {
-    // Remove the token from localStorage
-    localStorage.removeItem('userToken');
-    
-    // Update login status
-    setIsLoggedIn(false);
-    
-    // Close menu and navigate to home
-    setIsMenuOpen(false);
-    navigate('/');
+    setIsLoggedIn(false);  // Reset login state
   };
 
   return (
@@ -50,9 +29,8 @@ const Navbar = () => {
 
         {/* Menu Section */}
         <div
-          className={`fixed top-0 right-0 z-20 h-screen w-2/3 bg-background shadow-lg transform ${
-            isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-          } transition-transform md:relative md:h-auto md:w-auto md:shadow-none md:translate-x-0`}
+          className={`fixed top-0 right-0 z-20 h-screen w-2/3 bg-background shadow-lg transform ${isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+            } transition-transform md:relative md:h-auto md:w-auto md:shadow-none md:translate-x-0`}
         >
           <div className="flex flex-col items-center justify-center space-y-6 p-6 md:flex-row md:space-y-0 md:space-x-6">
             <Link
@@ -90,37 +68,34 @@ const Navbar = () => {
             >
               Tutorial
             </Link>
-            <Link
-              to="/about"
-              className="hover:text-primary"
-              onClick={() => setIsMenuOpen(false)}
-            >
-              About Us
-            </Link>
+        
             <div className="flex space-x-4">
-              <Link
-                to="/login"
-                className="flex items-center space-x-1 text-secondary hover:text-primary"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <i className="bx bx-log-in"></i> <span>Login</span>
-              </Link>
-              <Link
-                to="/signup"
-                className="flex items-center space-x-1 text-secondary hover:text-primary"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <i className="bx bx-user-plus"></i> <span>Signup</span>
-              </Link>
+              {!isLoggedIn ? (
+                <Link
+                  to="/login"
+                  className="flex items-center space-x-1 text-secondary hover:text-primary"
+                >
+                  <i className="bx bx-log-in"></i> <span>Login</span>
+                </Link>
+              ) : (
+                <div className="flex items-center space-x-2">
+                  <i className="bx bx-user-circle text-2xl text-primary"></i>
+                  <button
+                    className="text-secondary hover:text-primary"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
 
         {/* Mobile Menu Toggle */}
         <button
-          className={`z-30 flex flex-col items-center justify-center space-y-1 md:hidden ${
-            isMenuOpen ? 'text-primary' : 'text-text'
-          }`}
+          className={`z-30 flex flex-col items-center justify-center space-y-1 md:hidden ${isMenuOpen ? 'text-primary' : 'text-text'
+            }`}
           onClick={toggleMenu}
         >
           <span className="block h-1 w-6 bg-current"></span>

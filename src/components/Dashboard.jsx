@@ -93,53 +93,28 @@ const Dashboard = () => {
                 <div className="bg-white p-6 rounded-lg shadow-lg">
                     <div className="mb-4">
                         <h3 className="text-xl font-semibold text-primary font-nunito">Current Location</h3>
-                        <p className="text-lg text-text font-nunito">Pimpri, Pune 411018</p>
+                        <p className="text-lg text-text font-nunito">Daabadiya, Madhya Pradesh</p>
                     </div>
                 </div>
 
                 {/* Filter Section */}
                 <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-6">
-                    {["State", "District", "Pincode"].map((label, index) => (
+                    {["State", "District", "Telementry_UID"].map((label, index) => (
                         <div key={index} className="bg-white p-6 rounded-lg shadow-lg">
                             <h3 className="text-xl font-semibold text-primary font-nunito">{label}</h3>
-                            <select
-                                id={label.toLowerCase()}
-                                className="mt-2 p-2 w-full border border-gray-300 rounded-md text-text"
-                                value={
-                                    label === "State"
-                                        ? selectedState
-                                        : label === "District"
-                                            ? selectedDistrict
-                                            : ""
-                                }
-                                onChange={(e) =>
-                                    label === "State"
-                                        ? setSelectedState(e.target.value)
-                                        : setSelectedDistrict(e.target.value)
-                                }
-                            >
-                                <option value="">Select</option>
-                                {label === "State" && (
-                                    <>
-                                        <option value="california">California</option>
-                                        <option value="texas">Texas</option>
-                                    </>
-                                )}
-                                {label === "District" && (
-                                    <>
-                                        <option value="district2">District 2</option>
-                                        <option value="district3">District 3</option>
-                                    </>
-                                )}
-                                {label === "Pincode" && <option value="411018">411018</option>}
-                            </select>
+                            <div className="mt-2 p-2 w-full border border-gray-300 rounded-md text-text">
+                                {label === "State" && <span>Madhya Pradesh</span>}
+                                {label === "District" && <span>Agarmalwa</span>}
+                                {label === "Telementry_UID" && <span>CGWKOL0165</span>}
+                            </div>
                         </div>
                     ))}
                 </div>
+
             </section>
 
             {/* Reading Section with 4 Charts */}
-            <section className="graphs-section mb-10 flex flex-wrap  gap-6">
+            <section className="graphs-section mb-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
                 <div className="graph-container bg-white p-6 rounded-lg shadow-lg">
                     <h3 className="text-xl font-semibold text-primary mb-4 font-nunito">Battery</h3>
                     <Line data={waterLevelData} options={options} />
@@ -163,6 +138,23 @@ const Dashboard = () => {
             <section className="report mb-10">
                 <h3 className="text-2xl font-semibold text-primary mb-6 font-nunito">Past Analytics</h3>
                 <div className="bg-white p-6 rounded-lg shadow-lg">
+
+                    {/* Report Type */}
+                    <div className="mb-4">
+                        <label className="block text-lg text-primary mb-2 font-nunito">Report Type:</label>
+                        <select
+                            className="p-2 w-full border border-gray-300 rounded-md text-text"
+                            value={selectedReportType}
+                            onChange={(e) => setSelectedReportType(e.target.value)}
+                        >
+                            <option value="" disabled>Report Type</option>
+                            <option value="state">State Wise Report</option>
+                            <option value="district">District Wise Report</option>
+                            <option value="basin">Basin Wise Report</option>
+                            <option value="subbasin">Subbasin Wise Report</option>
+                        </select>
+                    </div>
+
                     {/* Duration Filter */}
                     <div className="mb-4">
                         <label className="block text-lg text-primary mb-2 font-nunito">Duration:</label>
@@ -181,20 +173,6 @@ const Dashboard = () => {
                                 </label>
                             ))}
                         </div>
-                    </div>
-
-                    {/* Report Type */}
-                    <div className="mb-4">
-                        <label className="block text-lg text-primary mb-2 font-nunito">Report Type:</label>
-                        <select
-                            className="p-2 w-full border border-gray-300 rounded-md text-text"
-                            value={selectedReportType}
-                            onChange={(e) => setSelectedReportType(e.target.value)}
-                        >
-                            <option value="">Select</option>
-                            <option value="sales">Sales</option>
-                            <option value="inventory">Inventory</option>
-                        </select>
                     </div>
 
                     {/* Download Button */}
