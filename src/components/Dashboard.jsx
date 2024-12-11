@@ -14,19 +14,19 @@ import "../index.css";
 // Register necessary Chart.js components
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip, Legend);
 
-const Reading = () => {
+const Dashboard = () => {
     const [selectedDuration, setSelectedDuration] = useState("");
     const [selectedReportType, setSelectedReportType] = useState("");
     const [selectedState, setSelectedState] = useState("");
     const [selectedDistrict, setSelectedDistrict] = useState("");
 
-    // Sample data for water level and water pressure
+    // Sample data for battery, water level, temperature, and pressure
     const waterLevelData = {
-        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+        labels: ["8-12", "9-12", "10-12", "11-12", "12-12", "13-12"],
         datasets: [
             {
-                label: "Water Level (in meters)",
-                data: [3.2, 3.5, 3.8, 4.1, 3.9, 4.2],
+                label: "Battery (in voltage)",
+                data: [3.59, 3.59, 3.64, 3.64, 3.64, 3.60],
                 borderColor: "#007bff",
                 backgroundColor: "rgba(0, 123, 255, 0.2)",
                 tension: 0.4,
@@ -35,13 +35,39 @@ const Reading = () => {
     };
 
     const waterPressureData = {
-        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+        labels: ["8-12", "9-12", "10-12", "11-12", "12-12", "13-12"],
         datasets: [
             {
-                label: "Water Pressure (in bar)",
-                data: [45, 44, 45, 45, 46, 45, 45, 45, 46],
+                label: "Water Level (in meter)",
+                data: [-5.28, -5.26, -5.27, -5.31, -5.32, -5.29],
                 borderColor: "#28a745",
                 backgroundColor: "rgba(40, 167, 69, 0.2)",
+                tension: 0.4,
+            },
+        ],
+    };
+
+    const temperatureData = {
+        labels: ["8-12", "9-12", "10-12", "11-12", "12-12", "13-12"],
+        datasets: [
+            {
+                label: "Temperature (°C)",
+                data: [26.36, 26.36, 26.31, 26.33, 26.31, 26.38],
+                borderColor: "#ff6347",
+                backgroundColor: "rgba(255, 99, 71, 0.2)",
+                tension: 0.4,
+            },
+        ],
+    };
+
+    const humidityData = {
+        labels: ["8-12", "9-12", "10-12", "11-12", "12-12", "13-12"],
+        datasets: [
+            {
+                label: "Barometric Pressure (mH2O)",
+                data: [957.99, 959.32, 960.14, 961.64, 958.99, 959.22],
+                borderColor: "#ffc107",
+                backgroundColor: "rgba(255, 193, 7, 0.2)",
                 tension: 0.4,
             },
         ],
@@ -112,60 +138,26 @@ const Reading = () => {
                 </div>
             </section>
 
-            {/* Reading Section with Charts */}
-            <section className="graphs-section mb-10 flex flex-col gap-6 md:grid md:grid-cols-2">
+            {/* Reading Section with 4 Charts */}
+            <section className="graphs-section mb-10 flex flex-wrap  gap-6">
                 <div className="graph-container bg-white p-6 rounded-lg shadow-lg">
-                    <h3 className="text-xl font-semibold text-primary mb-4 font-nunito">Water Level</h3>
+                    <h3 className="text-xl font-semibold text-primary mb-4 font-nunito">Battery</h3>
                     <Line data={waterLevelData} options={options} />
                 </div>
                 <div className="graph-container bg-white p-6 rounded-lg shadow-lg">
-                    <h3 className="text-xl font-semibold text-primary mb-4 font-nunito">Water Pressure</h3>
+                    <h3 className="text-xl font-semibold text-primary mb-4 font-nunito">Water Level</h3>
                     <Line data={waterPressureData} options={options} />
                 </div>
-            </section>
-
-
-            {/* Alert History Section */}
-            <section className="alert mb-10">
-                <h3 className="text-2xl font-semibold text-primary mb-6 font-nunito">Alert History</h3>
-                <div className="bg-white p-6 rounded-lg shadow-lg">
-                    <div className="overflow-x-auto">
-                        <table className="min-w-full table-auto">
-                            <thead>
-                                <tr>
-                                    {["Sr No.", "Type", "Date", "Location", "Resolved By", "Details"].map((header) => (
-                                        <th
-                                            key={header}
-                                            className="px-4 py-2 text-left text-primary font-nunito"
-                                        >
-                                            {header}
-                                        </th>
-                                    ))}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {[1, 2].map((row, index) => (
-                                    <tr key={index}>
-                                        {["1", "Type 1", "2023-09-15", "Pimpri, Pune", "John Doe", "Download"].map(
-                                            (content, i) => (
-                                                <td key={i} className="px-4 py-2 text-text font-nunito">
-                                                    {i === 5 ? (
-                                                        <button className="bg-primary text-white p-2 rounded-md">
-                                                            {content}
-                                                        </button>
-                                                    ) : (
-                                                        content
-                                                    )}
-                                                </td>
-                                            )
-                                        )}
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                <div className="graph-container bg-white p-6 rounded-lg shadow-lg">
+                    <h3 className="text-xl font-semibold text-primary mb-4 font-nunito">Temperature</h3>
+                    <Line data={temperatureData} options={options} />
+                </div>
+                <div className="graph-container bg-white p-6 rounded-lg shadow-lg">
+                    <h3 className="text-xl font-semibold text-primary mb-4 font-nunito">Barometric Pressure</h3>
+                    <Line data={humidityData} options={options} />
                 </div>
             </section>
+
 
             {/* Past Analytics Section */}
             <section className="report mb-10">
@@ -220,4 +212,4 @@ const Reading = () => {
     );
 };
 
-export default Reading;
+export default Dashboard;

@@ -833,5 +833,19 @@ body {
   background-color: #005f73;
 }
 
+.animate-bounce {
+    animation: bounce 1s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(-5%);
+    }
+    50% {
+        transform: translateY(0);
+    }
+}
+
+
     
   

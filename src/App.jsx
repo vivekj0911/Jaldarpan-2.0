@@ -2,11 +2,13 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 // Importing Components
+import 'leaflet/dist/leaflet.css';
+
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './components/Home';
 import Alert from './components/Alert';
-import Reading from './components/Reading';
+import Dashboard from './components/Dashboard';
 import Services from './components/Services';
 import AuthPage from './components/AuthPage';
 
@@ -21,7 +23,7 @@ const App = () => {
             <Navbar />
             <Routes>
                 <Route path="/" element={<Home />} />
-                <Route path="/reading" element={<Reading />} />
+                <Route path="/dashboard" element={<Dashboard/>} />
                 <Route path="/alert" element={<Alert />} />
                 <Route path="/services" element={<Services />} />
                 <Route path="/login" element={<AuthPage />} />

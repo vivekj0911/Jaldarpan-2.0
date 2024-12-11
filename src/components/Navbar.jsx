@@ -1,11 +1,42 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
+
+  // Check login status on component mount and when token changes
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const token = localStorage.getItem('userToken');
+      setIsLoggedIn(!!token);
+    };
+
+    checkLoginStatus();
+
+    // Listen for storage events to handle login/logout across tabs
+    window.addEventListener('storage', checkLoginStatus);
+
+    return () => {
+      window.removeEventListener('storage', checkLoginStatus);
+    };
+  }, []);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleLogout = () => {
+    // Remove the token from localStorage
+    localStorage.removeItem('userToken');
+    
+    // Update login status
+    setIsLoggedIn(false);
+    
+    // Close menu and navigate to home
+    setIsMenuOpen(false);
+    navigate('/');
   };
 
   return (
@@ -39,11 +70,11 @@ const Navbar = () => {
               Services
             </Link>
             <Link
-              to="/reading"
+              to="/dashboard"
               className="hover:text-primary"
               onClick={() => setIsMenuOpen(false)}
             >
-              Reading
+              Dashboard
             </Link>
             <Link
               to="/alert"
@@ -67,20 +98,38 @@ const Navbar = () => {
               About Us
             </Link>
             <div className="flex space-x-4">
-              <Link
-                to="/login"
-                className="flex items-center space-x-1 text-secondary hover:text-primary"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <i className="bx bx-log-in"></i> <span>Login</span>
-              </Link>
-              <Link
-                to="/signup"
-                className="flex items-center space-x-1 text-secondary hover:text-primary"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <i className="bx bx-user-plus"></i> <span>Signup</span>
-              </Link>
+              {isLoggedIn ? (
+                <div className="relative group">
+                  <button 
+                    className="flex items-center space-x-1 text-secondary hover:text-primary"
+                    onClick={() => {
+                      setIsMenuOpen(false);
+                      // You can navigate to a profile page or show a dropdown
+                      // navigate('/profile');
+                    }}
+                  >
+                    <i className="bx bx-user text-xl"></i>
+                  </button>
+                  
+                  {/* Optional: Logout dropdown */}
+                  <div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <button
+                      onClick={handleLogout}
+                      className="w-full text-left px-4 py-2 hover:bg-gray-100"
+                    >
+                      <i className="bx bx-log-out mr-2"></i>Logout
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  to="/login"
+                  className="flex items-center space-x-1 text-secondary hover:text-primary"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <i className="bx bx-log-in"></i> <span>Login</span>
+                </Link>
+              )}
             </div>
           </div>
         </div>

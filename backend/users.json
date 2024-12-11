@@ -1,0 +1,12 @@
+[
+  {
+    "id": "1733895880341",
+    "employee_id": "001",
+    "role": "admin",
+    "location": "pune",
+    "email": "demo1@gmail.com",
+    "phone": "911",
+    "password": "$2a$10$7iTMk9e7GXuXbwOQinvp4eIwgjJrj7PqgUF2seNJ.1mN9CAu3/hVe",
+    "createdAt": "2024-12-11T05:44:40.341Z"
+  }
+]
