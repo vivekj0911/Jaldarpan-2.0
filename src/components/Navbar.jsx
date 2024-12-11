@@ -46,11 +46,11 @@ const Navbar = () => {
               Reading
             </Link>
             <Link
-              to="/report"
+              to="/alert"
               className="hover:text-primary"
               onClick={() => setIsMenuOpen(false)}
             >
-              Report
+              Alert
             </Link>
             <Link
               to="/tutorial"
