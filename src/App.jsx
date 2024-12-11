@@ -5,6 +5,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Home from './components/Home';
+import Alert from './components/Alert';
 import Reading from './components/Reading';
 import Services from './components/Services';
 import AuthPage from './components/AuthPage';
@@ -13,6 +14,7 @@ import AuthPage from './components/AuthPage';
 // Optionally, import global styles if not done in `index.js`
 import './index.css'; // Ensure you have global styles if required
 
+
 const App = () => {
     return (
         <Router>
@@ -20,6 +22,7 @@ const App = () => {
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/reading" element={<Reading />} />
+                <Route path="/alert" element={<Alert />} />
                 <Route path="/services" element={<Services />} />
                 <Route path="/login" element={<AuthPage />} />
                 <Route path="/signup" element={<AuthPage />} />
