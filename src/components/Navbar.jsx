@@ -98,38 +98,20 @@ const Navbar = () => {
               About Us
             </Link>
             <div className="flex space-x-4">
-              {isLoggedIn ? (
-                <div className="relative group">
-                  <button 
-                    className="flex items-center space-x-1 text-secondary hover:text-primary"
-                    onClick={() => {
-                      setIsMenuOpen(false);
-                      // You can navigate to a profile page or show a dropdown
-                      // navigate('/profile');
-                    }}
-                  >
-                    <i className="bx bx-user text-xl"></i>
-                  </button>
-                  
-                  {/* Optional: Logout dropdown */}
-                  <div className="absolute right-0 mt-2 w-48 bg-white border rounded-md shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                    <button
-                      onClick={handleLogout}
-                      className="w-full text-left px-4 py-2 hover:bg-gray-100"
-                    >
-                      <i className="bx bx-log-out mr-2"></i>Logout
-                    </button>
-                  </div>
-                </div>
-              ) : (
-                <Link
-                  to="/login"
-                  className="flex items-center space-x-1 text-secondary hover:text-primary"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <i className="bx bx-log-in"></i> <span>Login</span>
-                </Link>
-              )}
+              <Link
+                to="/login"
+                className="flex items-center space-x-1 text-secondary hover:text-primary"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <i className="bx bx-log-in"></i> <span>Login</span>
+              </Link>
+              <Link
+                to="/signup"
+                className="flex items-center space-x-1 text-secondary hover:text-primary"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <i className="bx bx-user-plus"></i> <span>Signup</span>
+              </Link>
             </div>
           </div>
         </div>
