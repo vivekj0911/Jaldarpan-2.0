@@ -4,6 +4,7 @@ import MadhyaPradeshMap from "./MadhyaPradeshMap"; // Import the map component
 const Alert = () => {
   const [alertData, setAlertData] = useState(null); // State for alert details
   const [isLoading, setIsLoading] = useState(true); // State for loading status
+  const [role, setRole] = useState("Employee"); // State for role selection
 
   useEffect(() => {
     // Fetch alert details from the backend
@@ -30,49 +31,106 @@ const Alert = () => {
     // Add additional fake alert logic here (e.g., send a request to mark it as fake)
   };
 
+  const handleRoleChange = (e) => {
+    setRole(e.target.value);
+  };
+
   return (
     <section className="bg-background font-nunito p-6 rounded-lg shadow-md">
-      <div className="mb-6">
+      <div className="mb-6 text-center">
         <h3 className="text-primary text-xl font-bold">
           {isLoading ? "Loading..." : alertData?.alert ? "Alert Active!!" : "No Alert"}
         </h3>
       </div>
 
-      {alertData?.alert && (
-        <div className="mb-6 bg-gray-100 p-4 rounded-md shadow-md">
-          <p><strong>Telemetry UID:</strong> {alertData.telemetryUID}</p>
-          <p><strong>District:</strong> {alertData.district}</p>
-          <p><strong>Tahsil:</strong> {alertData.tahsil}</p>
-          <p><strong>Village:</strong> {alertData.village}</p>
-        </div>
-      )}
-
+      {/* Dropdown for selecting Employee or Admin */}
       <div className="mb-6">
-        {/* Include Madhya Pradesh Map and pass alert location data */}
-        {alertData?.alert && (
-          <MadhyaPradeshMap
-            alertLocation={{
-              latitude: alertData.latitude,
-              longitude: alertData.longitude,
-            }}
-          />
-        )}
+        <label htmlFor="role" className="text-lg font-semibold">Select Role:</label>
+        <select
+          id="role"
+          value={role}
+          onChange={handleRoleChange}
+          className="mt-2  p-2 border border-gray-300 rounded-md"
+        >
+          <option value="Employee">Employee</option>
+          <option value="Admin">Admin</option>
+        </select>
       </div>
 
-      <div className="flex gap-4 mb-6">
-        <button
-          className="bg-primary text-white px-4 py-2 rounded-md hover:bg-secondary"
-          onClick={handleResolve}
-        >
-          Resolved
-        </button>
-        <button
-          className="bg-secondary text-white px-4 py-2 rounded-md hover:bg-primary"
-          onClick={handleFakeAlert}
-        >
-          Fake Alert
-        </button>
-      </div>
+      {alertData?.alert ? (
+        <>
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+            {/* Telemetry UID */}
+            <div className="bg-white p-4 rounded-lg shadow-lg">
+              <h3 className="text-xl font-semibold text-primary font-nunito">Telemetry UID</h3>
+              <div className="mt-2 p-2 w-full border border-gray-300 rounded-md text-text">
+                <span>{alertData.telemetryUID}</span>
+              </div>
+            </div>
+
+            {/* District */}
+            <div className="bg-white p-4 rounded-lg shadow-lg">
+              <h3 className="text-xl font-semibold text-primary font-nunito">District</h3>
+              <div className="mt-2 p-2 w-full border border-gray-300 rounded-md text-text">
+                <span>{alertData.district}</span>
+              </div>
+            </div>
+
+            {/* Tahsil */}
+            <div className="bg-white p-4 rounded-lg shadow-lg">
+              <h3 className="text-xl font-semibold text-primary font-nunito">Tahsil</h3>
+              <div className="mt-2 p-2 w-full border border-gray-300 rounded-md text-text">
+                <span>{alertData.tahsil}</span>
+              </div>
+            </div>
+
+            {/* Village */}
+            <div className="bg-white p-4 rounded-lg shadow-lg">
+              <h3 className="text-xl font-semibold text-primary font-nunito">Village</h3>
+              <div className="mt-2 p-2 w-full border border-gray-300 rounded-md text-text">
+                <span>{alertData.village}</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="my-6">
+            {/* Include Madhya Pradesh Map with markers */}
+            <MadhyaPradeshMap
+              alertLocation={{
+                latitude: alertData.latitude,
+                longitude: alertData.longitude,
+              }}
+              villageName={alertData.village}  // Pass village from alertData
+            />
+          </div>
+
+          <div className="flex gap-4 mb-6">
+            <button
+              className="bg-primary text-white px-4 py-2 rounded-md hover:bg-secondary"
+              onClick={handleResolve}
+            >
+              Resolved
+            </button>
+            <button
+              className="bg-secondary text-white px-4 py-2 rounded-md hover:bg-primary"
+              onClick={handleFakeAlert}
+            >
+              Fake Alert
+            </button>
+          </div>
+        </>
+      ) : (
+        <>
+          <div className="flex justify-center items-center h-32 mb-6">
+            <p className="text-gray-500 text-lg">No Alert</p>
+          </div>
+
+          <div className="mb-6">
+            {/* Include Madhya Pradesh Map without markers */}
+            <MadhyaPradeshMap />
+          </div>
+        </>
+      )}
 
       <div className="overflow-x-auto bg-white shadow-md rounded-md">
         <table className="min-w-full divide-y divide-gray-200">
