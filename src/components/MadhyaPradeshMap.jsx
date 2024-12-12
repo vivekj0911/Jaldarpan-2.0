@@ -3,7 +3,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 
 const MadhyaPradeshMap = ({ alertLocation, villageName }) => {
   // Default center for Madhya Pradesh
-  const mpCenter = [23.473324, 77.947998];
+//   const mpCenter = [23.473324, 77.947998];
   // Default zoom level for Madhya Pradesh
   const mpZoom = 7;
 

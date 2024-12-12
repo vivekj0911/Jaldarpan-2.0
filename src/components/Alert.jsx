@@ -5,7 +5,9 @@ const Alert = () => {
   const [alertData, setAlertData] = useState(null); // State for alert details
   const [isLoading, setIsLoading] = useState(true); // State for loading status
   const [role, setRole] = useState("Employee"); // State for role selection
-
+  const [totalStations, setTotalStations] = useState(150); // Total number of stations
+  const [monitoredStations, setMonitoredStations] = useState(87);
+  
   useEffect(() => {
     // Fetch alert details from the backend
     fetch("http://localhost:5000/api/alert") // Replace with your backend API URL
@@ -23,12 +25,14 @@ const Alert = () => {
 
   const handleResolve = () => {
     console.log("Alert resolved");
-    // Add additional resolve logic here (e.g., send a request to update the alert status)
+    // Send resolved status to the server (this will need an endpoint to update alert status)
+    sendAlertDataToServer({ alert: false });
   };
 
   const handleFakeAlert = () => {
     console.log("Marked as fake alert");
-    // Add additional fake alert logic here (e.g., send a request to mark it as fake)
+    // Send fake alert status to the server (this will need an endpoint to update alert status)
+    sendAlertDataToServer({ alert: false });
   };
 
   const handleRoleChange = (e) => {
@@ -57,121 +61,101 @@ const Alert = () => {
         </select>
       </div>
 
-      {alertData?.alert ? (
+      {role === "Admin" ? (
         <>
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-6">
-            {/* Telemetry UID */}
-            <div className="bg-white p-4 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold text-primary font-nunito">Telemetry UID</h3>
-              <div className="mt-2 p-2 w-full border border-gray-300 rounded-md text-text">
-                <span>{alertData.telemetryUID}</span>
-              </div>
-            </div>
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+  {/* Total Stations */}
+  <div className="bg-white p-4 rounded-lg shadow-lg">
+    <h3 className="text-xl font-semibold text-primary font-nunito">Total Stations</h3>
+    <div className="mt-2 p-2 w-full border border-gray-300 rounded-md text-text">
+      <span>{totalStations}</span>
+    </div>
+  </div>
 
-            {/* District */}
-            <div className="bg-white p-4 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold text-primary font-nunito">District</h3>
-              <div className="mt-2 p-2 w-full border border-gray-300 rounded-md text-text">
-                <span>{alertData.district}</span>
-              </div>
-            </div>
+  {/* Monitored Stations */}
+  <div className="bg-white p-4 rounded-lg shadow-lg">
+    <h3 className="text-xl font-semibold text-primary font-nunito">Monitored Stations</h3>
+    <div className="mt-2 p-2 w-full border border-gray-300 rounded-md text-text">
+      <span>{monitoredStations}</span>
+    </div>
+  </div>
+</div>
 
-            {/* Tahsil */}
-            <div className="bg-white p-4 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold text-primary font-nunito">Tahsil</h3>
-              <div className="mt-2 p-2 w-full border border-gray-300 rounded-md text-text">
-                <span>{alertData.tahsil}</span>
-              </div>
-            </div>
-
-            {/* Village */}
-            <div className="bg-white p-4 rounded-lg shadow-lg">
-              <h3 className="text-xl font-semibold text-primary font-nunito">Village</h3>
-              <div className="mt-2 p-2 w-full border border-gray-300 rounded-md text-text">
-                <span>{alertData.village}</span>
-              </div>
-            </div>
-          </div>
 
           <div className="my-6">
-            {/* Include Madhya Pradesh Map with markers */}
-            <MadhyaPradeshMap
-              alertLocation={{
-                latitude: alertData.latitude,
-                longitude: alertData.longitude,
-              }}
-              villageName={alertData.village}  // Pass village from alertData
-            />
-          </div>
-
-          <div className="flex gap-4 mb-6">
-            <button
-              className="bg-primary text-white px-4 py-2 rounded-md hover:bg-secondary"
-              onClick={handleResolve}
-            >
-              Resolved
-            </button>
-            <button
-              className="bg-secondary text-white px-4 py-2 rounded-md hover:bg-primary"
-              onClick={handleFakeAlert}
-            >
-              False Alert
-            </button>
-          </div>
+          {/* Include Madhya Pradesh Map with multiple markers for Admin */}
+          <MadhyaPradeshMap
+            alertData={alertData} // Pass the alertData array for admin role
+            totalStations={totalStations} // Passing stats for Admin
+            monitoredStations={monitoredStations}
+          />
+        </div>
         </>
       ) : (
-        <>
-          <div className="flex justify-center items-center h-32 mb-6">
-            <p className="text-gray-500 text-lg">No Alert</p>
-          </div>
+        alertData?.alert && (
+          <>
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-6">
+              {/* Telemetry UID */}
+              <div className="bg-white p-4 rounded-lg shadow-lg">
+                <h3 className="text-xl font-semibold text-primary font-nunito">Telemetry UID</h3>
+                <div className="mt-2 p-2 w-full border border-gray-300 rounded-md text-text">
+                  <span>{alertData.telemetryUID}</span>
+                </div>
+              </div>
 
-          <div className="mb-6">
-            {/* Include Madhya Pradesh Map without markers */}
-            <MadhyaPradeshMap />
-          </div>
-        </>
+              {/* District */}
+              <div className="bg-white p-4 rounded-lg shadow-lg">
+                <h3 className="text-xl font-semibold text-primary font-nunito">District</h3>
+                <div className="mt-2 p-2 w-full border border-gray-300 rounded-md text-text">
+                  <span>{alertData.district}</span>
+                </div>
+              </div>
+
+              {/* Tahsil */}
+              <div className="bg-white p-4 rounded-lg shadow-lg">
+                <h3 className="text-xl font-semibold text-primary font-nunito">Tahsil</h3>
+                <div className="mt-2 p-2 w-full border border-gray-300 rounded-md text-text">
+                  <span>{alertData.tahsil}</span>
+                </div>
+              </div>
+
+              {/* Village */}
+              <div className="bg-white p-4 rounded-lg shadow-lg">
+                <h3 className="text-xl font-semibold text-primary font-nunito">Village</h3>
+                <div className="mt-2 p-2 w-full border border-gray-300 rounded-md text-text">
+                  <span>{alertData.village}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="my-6">
+              {/* Include Madhya Pradesh Map with alert location */}
+              <MadhyaPradeshMap
+                alertLocation={{
+                  latitude: alertData.latitude,
+                  longitude: alertData.longitude,
+                }}
+                villageName={alertData.village}
+              />
+            </div>
+
+            <div className="flex gap-4 mb-6">
+              <button
+                className="bg-primary text-white px-4 py-2 rounded-md hover:bg-secondary"
+                onClick={handleResolve}
+              >
+                Resolved
+              </button>
+              <button
+                className="bg-secondary text-white px-4 py-2 rounded-md hover:bg-primary"
+                onClick={handleFakeAlert}
+              >
+                False Alert
+              </button>
+            </div>
+          </>
+        )
       )}
-
-      <div className="overflow-x-auto bg-white shadow-md rounded-md">
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-primary text-white">
-            <tr>
-              <th className="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Sr No.</th>
-              <th className="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Type</th>
-              <th className="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Date</th>
-              <th className="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Location</th>
-              <th className="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Resolved By</th>
-              <th className="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Details</th>
-            </tr>
-          </thead>
-          <tbody className="bg-white divide-y divide-gray-200">
-            <tr>
-              <td className="px-6 py-4 text-sm">1</td>
-              <td className="px-6 py-4 text-sm">Type 1</td>
-              <td className="px-6 py-4 text-sm">2023-09-15</td>
-              <td className="px-6 py-4 text-sm">Pimpri, Pune</td>
-              <td className="px-6 py-4 text-sm">John Doe</td>
-              <td className="px-6 py-4 text-sm">
-                <button className="bg-secondary text-white px-4 py-2 rounded-md hover:bg-primary">
-                  Download
-                </button>
-              </td>
-            </tr>
-            <tr>
-              <td className="px-6 py-4 text-sm">2</td>
-              <td className="px-6 py-4 text-sm">Type 2</td>
-              <td className="px-6 py-4 text-sm">2023-08-18</td>
-              <td className="px-6 py-4 text-sm">Pimpri, Pune</td>
-              <td className="px-6 py-4 text-sm">Jane Smith</td>
-              <td className="px-6 py-4 text-sm">
-                <button className="bg-secondary text-white px-4 py-2 rounded-md hover:bg-primary">
-                  Download
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
     </section>
   );
 };

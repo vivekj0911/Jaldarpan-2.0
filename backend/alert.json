@@ -1,9 +1,47 @@
-{
-  "alert": true,
-  "telemetryUID": "CGWKOL0165",
-  "district": "Agar",
-  "tahsil": "Agar",
-  "village": "Daabadiya",
-  "latitude": 23.775793,
-  "longitude": 76.005447
-}
+[
+  {
+    "alert": true,
+    "telemetryUID": "CGWKOL0165",
+    "district": "Agar",
+    "tahsil": "Agar",
+    "village": "Daabadiya",
+    "latitude": 23.775793,
+    "longitude": 76.005447
+  },
+  {
+    "alert": true,
+    "telemetryUID": "CGWKOL0171",
+    "district": "Ujjain",
+    "tahsil": "Ujjain",
+    "village": "Chintaman",
+    "latitude": 23.181432,
+    "longitude": 75.774982
+  },
+  {
+    "alert": true,
+    "telemetryUID": "CGWKOL0172",
+    "district": "Dewas",
+    "tahsil": "Dewas",
+    "village": "Manpur",
+    "latitude": 23.210549,
+    "longitude": 76.039234
+  },
+  {
+    "alert": true,
+    "telemetryUID": "CGWKOL0173",
+    "district": "Shivpuri",
+    "tahsil": "Shivpuri",
+    "village": "Khirkiya",
+    "latitude": 25.434567,
+    "longitude": 77.670123
+  },
+  {
+    "alert": true,
+    "telemetryUID": "CGWKOL0174",
+    "district": "Gwalior",
+    "tahsil": "Gwalior",
+    "village": "Dabra",
+    "latitude": 26.213432,
+    "longitude": 78.221345
+  }
+]
